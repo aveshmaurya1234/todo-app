@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import express from "express";
-import NotesModel from "./config/models/notes.model.js";
+import NotesModel from "./models/notes.model.js";
 
 dotenv.config();
 
@@ -15,7 +15,11 @@ app.use(express.json());
  */
 
 app.post("/api/notes", async (req, res) => {
-    const { title, description } = req.body;
+    let { title, description } = req.body;
+
+    // --- trim values ---
+    title = title.trim();
+    description = description.trim();
 
     // --- Validation ---
     if (!title || !description) {
@@ -29,8 +33,17 @@ app.post("/api/notes", async (req, res) => {
 
     const newNote = await NotesModel.create({ title, description });
     res.status(201).json({ message: "Note created successfully", data: newNote });
-    
 });
 
+/**
+ * @route GET /api/notes
+ * @desc Get all notes
+ * @access Public
+ */
+
+app.get("/api/notes", async (req, res) => {
+    const notes = await NotesModel.find();
+    res.status(200).json({ data: notes });
+});
 
 export default app;
