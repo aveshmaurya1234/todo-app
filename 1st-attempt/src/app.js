@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import NotesModel from "./models/notes.model.js";
+import { createController, readController, updateController, deleteController } from "./controllers/note.controller.js";
 
 dotenv.config();
 
@@ -14,26 +15,7 @@ app.use(express.json());
  * @access Public
  */
 
-app.post("/api/notes", async (req, res) => {
-    let { title, description } = req.body;
-
-    // --- trim values ---
-    title = title.trim();
-    description = description.trim();
-
-    // --- Validation ---
-    if (!title || !description) {
-        return res.status(400).json({ error: "Title and description are required" });
-    }
-    if(title.trim().length < 4 || description.trim().length < 10) {
-        return res.status(400).json({ error: "Title must be at least 4 characters and description must be at least 10 characters" });
-    }
-
-    // --- In a real application, you would save the note to the database here ---
-
-    const newNote = await NotesModel.create({ title, description });
-    res.status(201).json({ message: "Note created successfully", data: newNote });
-});
+app.post("/api/notes", createController);
 
 /**
  * @route GET /api/notes
@@ -41,10 +23,7 @@ app.post("/api/notes", async (req, res) => {
  * @access Public
  */
 
-app.get("/api/notes", async (req, res) => {
-    const notes = await NotesModel.find();
-    res.status(200).json({ data: notes });
-});
+app.get("/api/notes", readController);
 
 /**
  * @route PATCH /api/notes/:id 
@@ -52,59 +31,14 @@ app.get("/api/notes", async (req, res) => {
  * @access Public
  */
 
-app.patch("/api/notes/:id", async (req, res) => {
-    const {id} = req.params;
-    let {description} = req.body
-
-    // --- trim values ---
-    description = description.trim();
-
-    // --- Validation ---
-    if (!id) {
-        return res.status(400).json({ error: "ID is required" });
-    }
-    if (!description) {
-        return res.status(400).json({ error: "description is required" });
-    }
-    if(description.trim().length < 10) {
-        return res.status(400).json({ error: "description must be at least 10 characters" });
-    }
-
-    // --- you would update the note in the database here ---
-
-    const note = await NotesModel.findById(id);
-    if (!note) {
-        return res.status(404).json({ error: "id not found" });
-    }
-
-    note.description = description;
-    await note.save();
-
-
-    // const updatedNote = await NotesModel.findByIdAndUpdate(id, { description }, { new: true });
-
-    res.status(200).json({message: "note update successfully", data: note });
-})
+app.patch("/api/notes/:id", updateController)
 
 /**
  * @route DELETE /api/notes/:id 
  * @desc Delete a note by Id 
  * @access Public
  */
-app.delete("/api/notes/:id", async (req, res) => {
-    const {id} = req.params;
-    // --- Validation ---
-    if (!id) {
-        return res.status(400).json({ error: "ID is required" });
-    }
-
-    const note = await NotesModel.findByIdAndDelete(id);
-    if (!note) {
-        return res.status(404).json({ error: "Note not found" });
-    }
-
-    res.status(200).json({ message: "Note deleted successfully" });
-});
+app.delete("/api/notes/:id", );
 
 
 export default app;
