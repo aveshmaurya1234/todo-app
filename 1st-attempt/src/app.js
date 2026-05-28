@@ -86,4 +86,25 @@ app.patch("/api/notes/:id", async (req, res) => {
     res.status(200).json({message: "note update successfully", data: note });
 })
 
+/**
+ * @route DELETE /api/notes/:id 
+ * @desc Delete a note by Id 
+ * @access Public
+ */
+app.delete("/api/notes/:id", async (req, res) => {
+    const {id} = req.params;
+    // --- Validation ---
+    if (!id) {
+        return res.status(400).json({ error: "ID is required" });
+    }
+
+    const note = await NotesModel.findByIdAndDelete(id);
+    if (!note) {
+        return res.status(404).json({ error: "Note not found" });
+    }
+
+    res.status(200).json({ message: "Note deleted successfully" });
+});
+
+
 export default app;
