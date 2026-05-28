@@ -77,14 +77,12 @@ app.patch("/api/notes/:id", async (req, res) => {
         return res.status(404).json({ error: "id not found" });
     }
 
-    // note.description = description;
-    // await note.save();
+    note.description = description;
+    await note.save();
 
 
-    const updatedNote = await NotesModel.findByIdAndUpdate(id, { description }, { new: true });
+    // const updatedNote = await NotesModel.findByIdAndUpdate(id, { description }, { new: true });
 
-
-    
 
     res.status(200).json({ data: note });
 })
