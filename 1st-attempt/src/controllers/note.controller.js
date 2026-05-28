@@ -1,4 +1,5 @@
-import NotesModel from "../models/notes.model";
+import mongoose from "mongoose";
+import NotesModel from "../models/notes.model.js";
 
 let createController = async (req, res) => {
     let { title, description } = req.body;
@@ -67,15 +68,28 @@ let deleteController = async (req, res) => {
         return res.status(400).json({ error: "ID is required" });
     }
 
+    // --- check id is valid mongoose ObjectId or not // and import mongoose ---
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+    }
+
+    // --- first way to delete the note in the database here ---
     const note = await NotesModel.findByIdAndDelete(id);
     if (!note) {
         return res.status(404).json({ error: "Note not found" });
     }
 
+    // --- second way to delete the note in the database here ---
+    // const note = await NotesModel.findById(id);
+    // if (!note) {
+    //     return res.status(404).json({ error: "Note not found" });
+    // }
+    // await note.deleteOne(); // ya note.delete(); 
+
     res.status(200).json({ message: "Note deleted successfully" });
 }
 
-export default {
+export {
     createController,
     readController,
     updateController,

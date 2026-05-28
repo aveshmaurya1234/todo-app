@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 import express from "express";
-import NotesModel from "./models/notes.model.js";
 import { createController, readController, updateController, deleteController } from "./controllers/note.controller.js";
 
 dotenv.config();
@@ -38,7 +37,7 @@ app.patch("/api/notes/:id", updateController)
  * @desc Delete a note by Id 
  * @access Public
  */
-app.delete("/api/notes/:id", );
+app.delete("/api/notes/:id",deleteController );
 
 
 export default app;
