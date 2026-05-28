@@ -46,4 +46,47 @@ app.get("/api/notes", async (req, res) => {
     res.status(200).json({ data: notes });
 });
 
+/**
+ * @route PATCH /api/notes/:id 
+ * @desc Update a note by Id required description in the request body
+ * @access Public
+ */
+
+app.patch("/api/notes/:id", async (req, res) => {
+    const {id} = req.params;
+    let {description} = req.body
+
+    // --- trim values ---
+    description = description.trim();
+
+    // --- Validation ---
+    if (!id) {
+        return res.status(400).json({ error: "ID is required" });
+    }
+    if (!description) {
+        return res.status(400).json({ error: "description is required" });
+    }
+    if(description.trim().length < 10) {
+        return res.status(400).json({ error: "description must be at least 10 characters" });
+    }
+
+    // --- you would update the note in the database here ---
+
+    const note = await NotesModel.findById(id);
+    if (!note) {
+        return res.status(404).json({ error: "id not found" });
+    }
+
+    // note.description = description;
+    // await note.save();
+
+
+    const updatedNote = await NotesModel.findByIdAndUpdate(id, { description }, { new: true });
+
+
+    
+
+    res.status(200).json({ data: note });
+})
+
 export default app;
