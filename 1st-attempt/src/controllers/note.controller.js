@@ -4,7 +4,7 @@ import NotesModel from "../models/notes.model.js";
 let createController = async (req, res) => {
     let { title, description } = req.body;
 
-    
+
 
     // --- trim values ---
     title = title.trim();
@@ -20,7 +20,9 @@ let createController = async (req, res) => {
 
     // --- In a real application, you would save the note to the database here ---
 
-    const newNote = await NotesModel.create({ title, description });
+    const newNote = await NotesModel.create({ 
+        title, description, user: req.user.email
+    });
     res.status(201).json({ message: "Note created successfully", data: newNote });
 }
 

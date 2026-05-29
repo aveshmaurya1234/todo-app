@@ -1,5 +1,6 @@
 import express from "express";
 import { createController, readController, updateController, deleteController } from "../controllers/note.controller.js";
+import authMiddleware from "../middleware/auth.middleware.js";
 
 const router = express.Router()
 
@@ -9,7 +10,7 @@ const router = express.Router()
  * @access Public
  */
 
-router.post("/", createController);
+router.post("/", authMiddleware, createController);
 
 /**
  * @route GET /api/notes
@@ -17,7 +18,7 @@ router.post("/", createController);
  * @access Public
  */
 
-router.get("/", readController);
+router.get("/", authMiddleware, readController);
 
 /**
  * @route PATCH /api/notes/:id 
@@ -25,7 +26,7 @@ router.get("/", readController);
  * @access Public
  */
 
-router.patch("/:id", updateController)
+router.patch("/:id", authMiddleware, updateController)
 
 /**
  * @route DELETE /api/notes/:id 
@@ -33,6 +34,6 @@ router.patch("/:id", updateController)
  * @access Public
  */
 
-router.delete("/:id",deleteController );
+router.delete("/:id", authMiddleware, deleteController );
 
 export default router;
