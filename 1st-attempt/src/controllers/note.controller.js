@@ -31,16 +31,23 @@ let updateController =  async (req, res) => {
     const {id} = req.params;
     let {description} = req.body
 
-    // --- trim values ---
-    description = description.trim();
-
     // --- Validation ---
     if (!id) {
         return res.status(400).json({ error: "ID is required" });
     }
+
+    // --- check id is valid mongoose ObjectId or not // and import mongoose ---
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+    }
+
     if (!description) {
         return res.status(400).json({ error: "description is required" });
     }
+
+    // --- trim values ---
+    description = description.trim();
+    
     if(description.trim().length < 10) {
         return res.status(400).json({ error: "description must be at least 10 characters" });
     }
