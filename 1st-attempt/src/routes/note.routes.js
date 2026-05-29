@@ -17,7 +17,7 @@ router.post("/", createController);
  * @access Public
  */
 
-router.get("/api/notes", readController);
+router.get("/", readController);
 
 /**
  * @route PATCH /api/notes/:id 
@@ -25,7 +25,7 @@ router.get("/api/notes", readController);
  * @access Public
  */
 
-router.patch("/api/notes/:id", updateController)
+router.patch("/:id", updateController)
 
 /**
  * @route DELETE /api/notes/:id 
@@ -33,6 +33,6 @@ router.patch("/api/notes/:id", updateController)
  * @access Public
  */
 
-router.delete("/api/notes/:id",deleteController );
+router.delete("/:id",deleteController );
 
 export default router;
