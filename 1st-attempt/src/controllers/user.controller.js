@@ -1,3 +1,7 @@
+import UserModel from "../models/user.model.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
 const userRegisterControllers = async (req, res) => {
     try{
         const { name, email, password } = req.body;
@@ -29,7 +33,9 @@ const userRegisterControllers = async (req, res) => {
             name, email, password: hashedPassword
         })
 
-        
+        // create token and set in cookie
+        let token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
+        res.cookie("token", token)
 
 
         return res.status(201).json({
@@ -48,18 +54,6 @@ const userRegisterControllers = async (req, res) => {
 export {
     userRegisterControllers
 }
-
-
-
-
-// let registerController = async (req, res) => {
-//     try {
-//         let {name, email, password, mobile} = req.body;
-
-
-//         // password hashing and token creation is done in model using mongoose middleware and method respectively
-
-        
 
 
 

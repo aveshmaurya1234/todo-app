@@ -11,9 +11,13 @@ import express from "express";
 import noteRoutes from "./routes/note.routes.js";
 import userRoutes from "./routes/user.routes.js";
 dotenv.config();
+import cookieParser from "cookie-parser";
+
+
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 
 // routes
 app.use("/api/notes", noteRoutes);
