@@ -4,6 +4,8 @@ import NotesModel from "../models/notes.model.js";
 let createController = async (req, res) => {
     let { title, description } = req.body;
 
+    
+
     // --- trim values ---
     title = title.trim();
     description = description.trim();
