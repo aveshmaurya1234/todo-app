@@ -6,11 +6,13 @@ export const dnsConnect = () => {
     dns.setDefaultResultOrder("ipv4first");
 };
 dnsConnect()
-import dotenv from "dotenv";
+
+import "dotenv/config";
+// import dotenv from "dotenv";
+// dotenv.config();
 import express from "express";
 import noteRoutes from "./routes/note.routes.js";
 import userRoutes from "./routes/user.routes.js";
-dotenv.config();
 import cookieParser from "cookie-parser";
 
 

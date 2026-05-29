@@ -8,7 +8,7 @@ let authMiddleware = async (req, res, next) => {
         if(!token)
         return res.status(404).json({
             message:"token not found"
-        })
+      })
 
         // decode token and verify
         let decode = jwt.verify(token, process.env.JWT_SECRET);
