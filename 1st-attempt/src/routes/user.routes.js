@@ -1,5 +1,5 @@
 import express from "express"
-import { userRegisterControllers } from "../controllers/user.controller.js";
+import { userloginControllers, userRegisterControllers } from "../controllers/user.controller.js";
 
 const router = express.Router();
 
@@ -10,5 +10,6 @@ const router = express.Router();
  */
 
 router.post("/register", userRegisterControllers)
+router.post("/login", userloginControllers)
 
 export default router;
